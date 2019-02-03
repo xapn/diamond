@@ -21,7 +21,9 @@ public class Diamond {
             throw new IllegalArgumentException("Argument value missing!");
         } else if (letter.isEmpty()) {
             throw new IllegalArgumentException("Letter missing!");
-        } else if (!letter.matches("[a-zA-Z]+")) {
+        } else if (letter.length() > 1) {
+            throw new IllegalArgumentException("A single letter expected!");
+        } else if (!letter.matches("[a-zA-Z]")) {
             throw new IllegalArgumentException("Letter expected!");
         } else {
             letterCode = letter.codePointAt(0);

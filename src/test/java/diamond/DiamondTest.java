@@ -55,5 +55,13 @@ class DiamondTest {
                     .becauseOf(IllegalArgumentException.class)
                     .withMessage("Letter expected!");
         }
+
+        @Test
+        void should_fail_to_create_a_diamond_given_several_letters() {
+            whenOutsideOperatingConditions(() -> Diamond.of("AB"))
+                    .thenItFails()
+                    .becauseOf(IllegalArgumentException.class)
+                    .withMessage("A single letter expected!");
+        }
     }
 }
