@@ -78,13 +78,7 @@ class DiamondTest {
                 return letter;
             } else {
                 List<String> atFirst = rangeClosed((int) 'A', letterCode)
-                        .mapToObj(code -> Stream
-                                .generate(() -> " ")
-                                .limit(letterCode - code)
-                                .collect(joining()) + (code == 65 ? "A" : letterOf((char) code) + Stream
-                                .generate(() -> " ")
-                                .limit((code - 66) * 2 + 1)
-                                .collect(joining()) + letterOf((char) code)))
+                        .mapToObj(this::lineForCode)
                         .collect(toList());
                 List<String> atLast = new ArrayList<>(atFirst.subList(0, atFirst.size() - 1));
                 reverse(atLast);
@@ -95,8 +89,28 @@ class DiamondTest {
             }
         }
 
+        private String lineForCode(int code) {
+            return indentLine(code) + (code == 65 ? "A" : letterOf((char) code) + separateLetters(code) + letterOf(
+                    (char) code));
+        }
+
+        private String indentLine(int code) {
+            return repeatSpaceNTimes(letterCode - code);
+        }
+
+        private String separateLetters(int code) {
+            return repeatSpaceNTimes((code - 66) * 2 + 1);
+        }
+
         private String letterOf(char code) {
             return valueOf(code);
+        }
+
+        private String repeatSpaceNTimes(int times) {
+            return Stream
+                    .generate(() -> " ")
+                    .limit(times)
+                    .collect(joining());
         }
     }
 }
