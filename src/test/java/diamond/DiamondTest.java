@@ -2,6 +2,11 @@ package diamond;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.IntStream.rangeClosed;
 import static testasyouthink.TestAsYouThink.resultOf;
 import static testasyouthink.TestAsYouThink.whenOutsideOperatingConditions;
 
@@ -10,8 +15,13 @@ class DiamondTest {
     private static String diamondOf(String letter) {
         if (letter == null) {
             throw new IllegalArgumentException("Argument value missing!");
+        } else if (letter.isEmpty()) {
+            return letter;
+        } else {
+            return rangeClosed((int) 'A', letter.codePointAt(0))
+                    .mapToObj(code -> String.valueOf((char) code))
+                    .collect(joining());
         }
-        return letter;
     }
 
     @Test
@@ -30,5 +40,10 @@ class DiamondTest {
                 .thenItFails()
                 .becauseOf(IllegalArgumentException.class)
                 .withMessage("Argument value missing!");
+    }
+
+    @Test
+    void should_return_AB_given_B() {
+        resultOf(() -> diamondOf("B")).isEqualTo("AB");
     }
 }
