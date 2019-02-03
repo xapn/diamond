@@ -38,13 +38,19 @@ class DiamondTest {
     }
 
     @Test
-    void should_return_AnBBnA_given_B() {
-        resultOf(() -> Diamond.of("B")).isEqualTo(" A\nBB\n A");
+    void should_create_a_diamond_given_B() {
+        resultOf(() -> Diamond.of("B")).isEqualTo(" A\n" //
+                + "B B\n" //
+                + " A");
     }
 
     @Test
-    void should_return_AnBBnCCnBBnA_given_C() {
-        resultOf(() -> Diamond.of("C")).isEqualTo("  A\n BB\nCC\n BB\n  A");
+    void should_create_a_diamond_given_C() {
+        resultOf(() -> Diamond.of("C")).isEqualTo("  A\n" //
+                + " B B\n" //
+                + "C   C\n" //
+                + " B B\n" //
+                + "  A");
     }
 
     static class Diamond {
@@ -68,15 +74,17 @@ class DiamondTest {
         }
 
         private String create() {
-            if ( "A".equals(letter)) {
+            if ("A".equals(letter)) {
                 return letter;
             } else {
                 List<String> atFirst = rangeClosed((int) 'A', letterCode)
                         .mapToObj(code -> Stream
                                 .generate(() -> " ")
                                 .limit(letterCode - code)
-                                .collect(joining()) + (code == 65 ? "A" : letterOf((char) code) + letterOf(
-                                (char) code)))
+                                .collect(joining()) + (code == 65 ? "A" : letterOf((char) code) + Stream
+                                .generate(() -> " ")
+                                .limit((code - 66) * 2 + 1)
+                                .collect(joining()) + letterOf((char) code)))
                         .collect(toList());
                 List<String> atLast = new ArrayList<>(atFirst.subList(0, atFirst.size() - 1));
                 reverse(atLast);
