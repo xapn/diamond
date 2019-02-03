@@ -23,7 +23,10 @@ class DiamondTest {
             return letter;
         } else {
             List<String> atFirst = rangeClosed((int) 'A', letter.codePointAt(0))
-                    .mapToObj(code -> code == 65 ? "A" : valueOf((char) code) + valueOf((char) code))
+                    .mapToObj(code -> Stream
+                            .generate(() -> " ")
+                            .limit(letter.codePointAt(0) - code)
+                            .collect(joining()) + (code == 65 ? "A" : valueOf((char) code) + valueOf((char) code)))
                     .collect(toList());
             List<String> atLast = new ArrayList<>(atFirst.subList(0, atFirst.size() - 1));
             reverse(atLast);
@@ -54,11 +57,11 @@ class DiamondTest {
 
     @Test
     void should_return_AnBBnA_given_B() {
-        resultOf(() -> diamondOf("B")).isEqualTo("A\nBB\nA");
+        resultOf(() -> diamondOf("B")).isEqualTo(" A\nBB\n A");
     }
 
     @Test
     void should_return_AnBBnCCnBBnA_given_C() {
-        resultOf(() -> diamondOf("C")).isEqualTo("A\nBB\nCC\nBB\nA");
+        resultOf(() -> diamondOf("C")).isEqualTo("  A\n BB\nCC\n BB\n  A");
     }
 }
