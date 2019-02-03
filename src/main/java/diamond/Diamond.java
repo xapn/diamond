@@ -34,12 +34,11 @@ import static java.util.stream.IntStream.rangeClosed;
 
 public class Diamond {
 
-    private final String letter;
-    private final int letterCode;
+    private final String givenLetter;
+    private final int givenLetterCode;
     private final int startCode;
 
     private Diamond(String letter) {
-        this.letter = letter;
         if (letter == null) {
             throw new IllegalArgumentException("Argument value missing!");
         } else if (letter.isEmpty()) {
@@ -49,7 +48,8 @@ public class Diamond {
         } else if (!letter.matches("[a-zA-Z]")) {
             throw new IllegalArgumentException("Letter expected!");
         } else {
-            letterCode = letter.codePointAt(0);
+            this.givenLetter = letter;
+            givenLetterCode = letter.codePointAt(0);
             if (letter.matches("[A-Z]")) {
                 startCode = (int) 'A';
             } else {
@@ -59,22 +59,19 @@ public class Diamond {
     }
 
     public static String of(String letter) {
-        return new Diamond(letter).create();
+        return new Diamond(letter).crystallize();
     }
 
-    private String create() {
-        if ("A".equals(letter.toUpperCase())) {
-            return letter;
+    private String crystallize() {
+        if ("A".equals(givenLetter.toUpperCase())) {
+            return givenLetter;
         } else {
-            List<String> atFirst = rangeClosed(startCode, letterCode)
+            List<String> topHalfAtFirst = rangeClosed(startCode, givenLetterCode)
                     .mapToObj(this::lineForCode)
                     .collect(toList());
-            List<String> atLast = new ArrayList<>(atFirst.subList(0, atFirst.size() - 1));
-            reverse(atLast);
-            return Stream
-                    .of(atFirst, atLast)
-                    .flatMap(List::stream)
-                    .collect(joining("\n"));
+            List<String> bottomHalfAtLast = new ArrayList<>(topHalfAtFirst.subList(0, topHalfAtFirst.size() - 1));
+            reverse(bottomHalfAtLast);
+            return assembly(topHalfAtFirst, bottomHalfAtLast);
         }
     }
 
@@ -84,7 +81,7 @@ public class Diamond {
     }
 
     private String indentLine(int code) {
-        return repeatSpaceNTimes(letterCode - code);
+        return repeatSpaceNTimes(givenLetterCode - code);
     }
 
     private String separateLetters(int code) {
@@ -100,5 +97,12 @@ public class Diamond {
                 .generate(() -> " ")
                 .limit(times)
                 .collect(joining());
+    }
+
+    private String assembly(List<String> first, List<String> last) {
+        return Stream
+                .of(first, last)
+                .flatMap(List::stream)
+                .collect(joining("\n"));
     }
 }
