@@ -2,9 +2,6 @@ package diamond;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.rangeClosed;
 import static testasyouthink.TestAsYouThink.resultOf;
@@ -19,7 +16,7 @@ class DiamondTest {
             return letter;
         } else {
             return rangeClosed((int) 'A', letter.codePointAt(0))
-                    .mapToObj(code -> String.valueOf((char) code))
+                    .mapToObj(code -> code == 65 ? "A" : String.valueOf((char) code) + String.valueOf((char) code))
                     .collect(joining());
         }
     }
@@ -43,7 +40,7 @@ class DiamondTest {
     }
 
     @Test
-    void should_return_AB_given_B() {
-        resultOf(() -> diamondOf("B")).isEqualTo("AB");
+    void should_return_ABB_given_B() {
+        resultOf(() -> diamondOf("B")).isEqualTo("ABB");
     }
 }
