@@ -17,8 +17,11 @@ import static testasyouthink.TestAsYouThink.whenOutsideOperatingConditions;
 class DiamondTest {
 
     @Test
-    void should_create_nothing_given_no_letter() {
-        resultOf(() -> Diamond.of("")).isEqualTo("");
+    void should_fail_to_create_a_diamond_given_no_letter() {
+        whenOutsideOperatingConditions(() -> Diamond.of(""))
+                .thenItFails()
+                .becauseOf(IllegalArgumentException.class)
+                .withMessage("Letter missing!");
     }
 
     @Test
@@ -51,8 +54,10 @@ class DiamondTest {
 
         private Diamond(String letter) {
             this.letter = letter;
-            if (letter == null || letter.isEmpty()) {
-                letterCode = -1;
+            if (letter == null) {
+                throw new IllegalArgumentException("Argument value missing!");
+            } else if (letter.isEmpty()) {
+                throw new IllegalArgumentException("Letter missing!");
             } else {
                 letterCode = letter.codePointAt(0);
             }
@@ -63,9 +68,7 @@ class DiamondTest {
         }
 
         private String create() {
-            if (letter == null) {
-                throw new IllegalArgumentException("Argument value missing!");
-            } else if (letter.isEmpty() || "A".equals(letter)) {
+            if ( "A".equals(letter)) {
                 return letter;
             } else {
                 List<String> atFirst = rangeClosed((int) 'A', letterCode)
