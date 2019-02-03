@@ -18,7 +18,7 @@ class DiamondTest {
         } else {
             return rangeClosed((int) 'A', letter.codePointAt(0))
                     .mapToObj(code -> code == 65 ? "A" : valueOf((char) code) + valueOf((char) code))
-                    .collect(joining("", "", "A".equals(letter) ? "" : "A"));
+                    .collect(joining("\n", "", "A".equals(letter) ? "" : "\nA"));
         }
     }
 
@@ -41,7 +41,7 @@ class DiamondTest {
     }
 
     @Test
-    void should_return_ABBA_given_B() {
-        resultOf(() -> diamondOf("B")).isEqualTo("ABBA");
+    void should_return_AnBBnA_given_B() {
+        resultOf(() -> diamondOf("B")).isEqualTo("A\nBB\nA");
     }
 }
