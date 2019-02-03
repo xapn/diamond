@@ -79,7 +79,7 @@ public class Diamond {
     }
 
     private String lineForCode(int code) {
-        String letter = letterOf((char) code);
+        String letter = letterOf(code);
         return indentLine(code) + (code == startCode ? letter : letter + separateLetters(code) + letter);
     }
 
@@ -91,8 +91,8 @@ public class Diamond {
         return repeatSpaceNTimes((code - startCode - 1) * 2 + 1);
     }
 
-    private String letterOf(char code) {
-        return valueOf(code);
+    private String letterOf(int code) {
+        return valueOf((char) code);
     }
 
     private String repeatSpaceNTimes(int times) {
