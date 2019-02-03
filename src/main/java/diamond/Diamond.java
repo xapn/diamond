@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -36,6 +36,7 @@ public class Diamond {
 
     private final String letter;
     private final int letterCode;
+    private final int startCode;
 
     private Diamond(String letter) {
         this.letter = letter;
@@ -49,6 +50,11 @@ public class Diamond {
             throw new IllegalArgumentException("Letter expected!");
         } else {
             letterCode = letter.codePointAt(0);
+            if (letter.matches("[A-Z]")) {
+                startCode = (int) 'A';
+            } else {
+                startCode = (int) 'a';
+            }
         }
     }
 
@@ -60,7 +66,7 @@ public class Diamond {
         if ("A".equals(letter.toUpperCase())) {
             return letter;
         } else {
-            List<String> atFirst = rangeClosed((int) 'A', letterCode)
+            List<String> atFirst = rangeClosed(startCode, letterCode)
                     .mapToObj(this::lineForCode)
                     .collect(toList());
             List<String> atLast = new ArrayList<>(atFirst.subList(0, atFirst.size() - 1));
@@ -73,8 +79,8 @@ public class Diamond {
     }
 
     private String lineForCode(int code) {
-        return indentLine(code) + (code == 65 ? "A" : letterOf((char) code) + separateLetters(code) + letterOf(
-                (char) code));
+        String letter = letterOf((char) code);
+        return indentLine(code) + (code == startCode ? letter : letter + separateLetters(code) + letter);
     }
 
     private String indentLine(int code) {
@@ -82,7 +88,7 @@ public class Diamond {
     }
 
     private String separateLetters(int code) {
-        return repeatSpaceNTimes((code - 66) * 2 + 1);
+        return repeatSpaceNTimes((code - startCode - 1) * 2 + 1);
     }
 
     private String letterOf(char code) {
