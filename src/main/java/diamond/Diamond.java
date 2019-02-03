@@ -57,7 +57,7 @@ public class Diamond {
     }
 
     private String create() {
-        if ("A".equals(letter)) {
+        if ("A".equals(letter.toUpperCase())) {
             return letter;
         } else {
             List<String> atFirst = rangeClosed((int) 'A', letterCode)

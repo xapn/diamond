@@ -51,6 +51,11 @@ class DiamondTest {
                 + "  A");
     }
 
+    @Test
+    void should_create_a_diamond_given_a() {
+        resultOf(() -> Diamond.of("a")).isEqualTo("a");
+    }
+
     @Nested
     class Given_an_invalid_argument {
 
