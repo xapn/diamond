@@ -47,5 +47,13 @@ class DiamondTest {
                     .becauseOf(IllegalArgumentException.class)
                     .withMessage("Letter missing!");
         }
+
+        @Test
+        void should_fail_to_create_a_diamond_given_anything_but_a_letter() {
+            whenOutsideOperatingConditions(() -> Diamond.of("1"))
+                    .thenItFails()
+                    .becauseOf(IllegalArgumentException.class)
+                    .withMessage("Letter expected!");
+        }
     }
 }
