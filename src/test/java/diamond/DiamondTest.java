@@ -16,40 +16,19 @@ import static testasyouthink.TestAsYouThink.whenOutsideOperatingConditions;
 
 class DiamondTest {
 
-    private static String diamondOf(String letter) {
-        if (letter == null) {
-            throw new IllegalArgumentException("Argument value missing!");
-        } else if (letter.isEmpty() || "A".equals(letter)) {
-            return letter;
-        } else {
-            List<String> atFirst = rangeClosed((int) 'A', letter.codePointAt(0))
-                    .mapToObj(code -> Stream
-                            .generate(() -> " ")
-                            .limit(letter.codePointAt(0) - code)
-                            .collect(joining()) + (code == 65 ? "A" : valueOf((char) code) + valueOf((char) code)))
-                    .collect(toList());
-            List<String> atLast = new ArrayList<>(atFirst.subList(0, atFirst.size() - 1));
-            reverse(atLast);
-            return Stream
-                    .of(atFirst, atLast)
-                    .flatMap(List::stream)
-                    .collect(joining("\n"));
-        }
-    }
-
     @Test
     void should_create_nothing_given_no_letter() {
-        resultOf(() -> diamondOf("")).isEqualTo("");
+        resultOf(() -> Diamond.of("")).isEqualTo("");
     }
 
     @Test
     void should_create_a_diamond_given_A() {
-        resultOf(() -> diamondOf("A")).isEqualTo("A");
+        resultOf(() -> Diamond.of("A")).isEqualTo("A");
     }
 
     @Test
     void should_fail_to_create_a_diamond_given_nil() {
-        whenOutsideOperatingConditions(() -> diamondOf(null))
+        whenOutsideOperatingConditions(() -> Diamond.of(null))
                 .thenItFails()
                 .becauseOf(IllegalArgumentException.class)
                 .withMessage("Argument value missing!");
@@ -57,11 +36,56 @@ class DiamondTest {
 
     @Test
     void should_return_AnBBnA_given_B() {
-        resultOf(() -> diamondOf("B")).isEqualTo(" A\nBB\n A");
+        resultOf(() -> Diamond.of("B")).isEqualTo(" A\nBB\n A");
     }
 
     @Test
     void should_return_AnBBnCCnBBnA_given_C() {
-        resultOf(() -> diamondOf("C")).isEqualTo("  A\n BB\nCC\n BB\n  A");
+        resultOf(() -> Diamond.of("C")).isEqualTo("  A\n BB\nCC\n BB\n  A");
+    }
+
+    static class Diamond {
+
+        private final String letter;
+        private final int letterCode;
+
+        private Diamond(String letter) {
+            this.letter = letter;
+            if (letter == null || letter.isEmpty()) {
+                letterCode = -1;
+            } else {
+                letterCode = letter.codePointAt(0);
+            }
+        }
+
+        static String of(String letter) {
+            return new Diamond(letter).create();
+        }
+
+        private String create() {
+            if (letter == null) {
+                throw new IllegalArgumentException("Argument value missing!");
+            } else if (letter.isEmpty() || "A".equals(letter)) {
+                return letter;
+            } else {
+                List<String> atFirst = rangeClosed((int) 'A', letterCode)
+                        .mapToObj(code -> Stream
+                                .generate(() -> " ")
+                                .limit(letterCode - code)
+                                .collect(joining()) + (code == 65 ? "A" : letterOf((char) code) + letterOf(
+                                (char) code)))
+                        .collect(toList());
+                List<String> atLast = new ArrayList<>(atFirst.subList(0, atFirst.size() - 1));
+                reverse(atLast);
+                return Stream
+                        .of(atFirst, atLast)
+                        .flatMap(List::stream)
+                        .collect(joining("\n"));
+            }
+        }
+
+        private String letterOf(char code) {
+            return valueOf(code);
+        }
     }
 }
