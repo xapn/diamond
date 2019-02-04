@@ -34,27 +34,16 @@ import static java.util.stream.IntStream.rangeClosed;
 
 public class Diamond {
 
-    private final String givenLetter;
-    private final int givenLetterCode;
+    private final Letter givenLetter;
     private final int startCode;
 
     private Diamond(String letter) {
-        if (letter == null) {
-            throw new IllegalArgumentException("Argument value missing!");
-        } else if (letter.isEmpty()) {
-            throw new IllegalArgumentException("Letter missing!");
-        } else if (letter.length() > 1) {
-            throw new IllegalArgumentException("A single letter expected!");
-        } else if (!letter.matches("[a-zA-Z]")) {
-            throw new IllegalArgumentException("Letter expected!");
+        this.givenLetter = new Letter(letter);
+
+        if (givenLetter.isUppercase()) {
+            startCode = (int) 'A';
         } else {
-            this.givenLetter = letter;
-            givenLetterCode = letter.codePointAt(0);
-            if (letter.matches("[A-Z]")) {
-                startCode = (int) 'A';
-            } else {
-                startCode = (int) 'a';
-            }
+            startCode = (int) 'a';
         }
     }
 
@@ -63,10 +52,10 @@ public class Diamond {
     }
 
     private String crystallize() {
-        if ("A".equals(givenLetter.toUpperCase())) {
-            return givenLetter;
+        if (givenLetter.isA()) {
+            return givenLetter.getLetter();
         } else {
-            List<String> topHalfAtFirst = rangeClosed(startCode, givenLetterCode)
+            List<String> topHalfAtFirst = rangeClosed(startCode, givenLetter.getCode())
                     .mapToObj(this::lineForCode)
                     .collect(toList());
             List<String> bottomHalfAtLast = new ArrayList<>(topHalfAtFirst.subList(0, topHalfAtFirst.size() - 1));
@@ -81,7 +70,7 @@ public class Diamond {
     }
 
     private String indentLine(int code) {
-        return repeatSpaceNTimes(givenLetterCode - code);
+        return repeatSpaceNTimes(givenLetter.getCode() - code);
     }
 
     private String separateLetters(int code) {
