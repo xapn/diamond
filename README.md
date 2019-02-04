@@ -1,5 +1,30 @@
 # Diamond
 
+A letter for a diamond!
+
+## Kata instructions
+
+Given a single letter, print a diamond starting with 'A' with the supplied letter at the widest point. This kata like many others is intended to be solved by applying Test-Driven Development (TDD).
+
+Example for 'A':
+<pre>
+A
+</pre>
+Example for 'B':
+<pre>
+ A
+B B
+ A
+</pre>
+Example for 'C':
+<pre>
+  A
+ B B
+C   C
+ B B
+  A
+</pre>
+
 ## Get started
 
 Use the Diamond program in command line as following.
