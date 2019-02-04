@@ -27,7 +27,7 @@ C   C
 
 ## Get started
 
-Use the Diamond program in command line as following.
+Use my Diamond program in command line as following.
 ```bash
 mvn clean package -Pstandalone # to build it once
 java -jar target/diamond-kata-0.1.0-SNAPSHOT-shaded.jar F # to run it as many times as you want
@@ -46,7 +46,7 @@ F         F
     B B
      A
 </pre>
-The Diamond program works for uppercase letters as for lowercase letters. For example, the diamond printed for 'c':
+My Diamond program works for uppercase letters as for lowercase letters. For example, the diamond printed for 'c':
 <pre>
   a
  b b
@@ -54,3 +54,22 @@ c   c
  b b
   a
 </pre>
+
+Also use it as a Java library with Maven.
+```
+<dependency>
+    <groupId>com.github.xapn</groupId>
+    <artifactId>diamond-kata</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+</dependency>
+```
+And get any diamond you want like that.
+```java
+import diamond.Diamond;
+
+class Example {
+    public static void main(String[] args) {
+        String diamond = Diamond.of("X");
+    }
+}
+```
