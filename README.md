@@ -2,6 +2,10 @@
 
 A letter for a diamond!
 
+[![LoC](https://tokei.rs/b1/github/xapn/diamond?category=code)](https://github.com/xapn/diamond) [![Files](https://tokei.rs/b1/github/xapn/diamond?category=files)](https://github.com/xapn/diamond) [![Total lines](https://tokei.rs/b1/github/xapn/diamond?category=lines)](https://github.com/xapn/diamond) [![Comments](https://tokei.rs/b1/github/xapn/diamond?category=comments)](https://github.com/xapn/diamond) [![Blank lines](https://tokei.rs/b1/github/xapn/diamond?category=blanks)](https://github.com/xapn/diamond)
+
+[![TestAsYouThink badge](https://img.shields.io/badge/Tests%20as%20first--class%20citizens%20with-TestAsYouThink-brightgreen.svg)](https://testasyouthink.org)
+
 ## Kata instructions
 
 Given a single letter, print a diamond starting with 'A' with the supplied letter at the widest point. This kata like many others is intended to be solved by applying Test-Driven Development (TDD).
