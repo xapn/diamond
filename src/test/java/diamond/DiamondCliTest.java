@@ -28,5 +28,11 @@ class DiamondCliTest {
             when(() -> DiamondCli.main(null)).thenStandardOutput(
                     stdout -> assertThat(stdout).hasContent("Argument value missing!"));
         }
+
+        @Test
+        void should_print_an_error_message_given_several_letters() {
+            when(() -> DiamondCli.main(new String[]{"A", "B"})).thenStandardOutput(
+                    stdout -> assertThat(stdout).hasContent("A single letter expected!"));
+        }
     }
 }
